@@ -3,7 +3,8 @@
 
 void to_json(json& j, const Train& t) {
 	j = json{ { "idx", t.idx },{ "line_idx", t.line_idx },{ "player_id", t.player_id },
-	{ "position", t.position },{ "speed", t.speed } };
+	{ "position", t.position },{ "speed", t.speed }, 
+	{"capacity", t.capacity}, {"product", t.product} };
 }
 
 void to_json(json & j, const Line & line)
@@ -17,6 +18,8 @@ void from_json(const json& j, Train& t) {
 	t.player_id = j.at("player_id").get<std::string>();
 	t.position = j.at("position").get<uint32_t>();
 	t.speed = j.at("speed").get<uint32_t>();
+	t.capacity = j.at("capacity").get<uint32_t>();
+	t.product = j.at("product").get<uint32_t>();
 }
 
 void from_json(const json & j, Line & line)

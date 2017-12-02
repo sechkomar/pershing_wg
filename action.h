@@ -20,7 +20,7 @@ struct ActionMessage {
 
 	ActionMessage(const Action &code, std::string &msg) : action_code(code) {
 		data_length = msg.length();
-		this->data = new char[1];
+		this->data = new char[1]; //for initialization
 		copy_string(this->data, data_length, msg.c_str());
 	}
 

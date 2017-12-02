@@ -5,6 +5,11 @@
 #include "nlohmann-json\json.hpp"
 using json = nlohmann::json;
 
+struct Home
+{
+	uint32_t idx;
+	uint32_t post_id;
+};
 
 struct Train
 {	
@@ -13,6 +18,9 @@ struct Train
 	std::string player_id;
 	uint32_t position;
 	uint32_t speed;
+
+	uint32_t capacity;
+	uint32_t product;
 };
 
 struct Line

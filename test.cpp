@@ -15,9 +15,8 @@ int main(int argc, char* argv[]) {
 		return EXIT_FAILURE;
 	}
 
-
 	int result = game::end();
 	
 	system("pause");
-	return result;
+	return 0;
 }

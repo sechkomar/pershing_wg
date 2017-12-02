@@ -7,7 +7,7 @@
 #include <string>
 #include <iostream>
 
-#include "result.h"
+#include "response.h"
 #include "action.h"
 
 class Socket 
@@ -47,13 +47,13 @@ public:
 		
 		int received = recv(sock, reinterpret_cast<char*>(&resCode), sizeof(uint32_t), 0);
 		if (received < 4) {
-			res = ResponseMessage(Result::NO_RESULT, 0, "");
+			res = ResponseMessage(Response::NO_RESULT, 0, "");
 			return;
 		}
 			
 		received = recv(sock, reinterpret_cast<char*>(&datLen), sizeof(uint32_t), 0);
 		if (received < 4) {
-			res = ResponseMessage(Result::NO_RESULT, 0, "");
+			res = ResponseMessage(Response::NO_RESULT, 0, "");
 			return;
 		}
 			
@@ -67,7 +67,7 @@ public:
 		}
 		datBuf[datLen] = '\0';
 		// THERE THERE -------------------------------------------------------------------
-		res.set(static_cast<Result>(resCode), datLen, datBuf);
+		res.set(static_cast<Response>(resCode), datLen, datBuf);
 	};
 
 	void make_move(const ActionMessage& act, ResponseMessage &msg) const {

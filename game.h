@@ -6,14 +6,10 @@
 #include "objects.h"
 #include "socket.h"
 
-struct Home
-{
-	uint32_t idx;
-	uint32_t post_id;
-};
 
 namespace game
 {
+
 	static Home home;
 	static std::map<uint32_t, Train> trains;
 	static std::string idx;
@@ -23,11 +19,17 @@ namespace game
 
 
 	void get_map();
+
 	bool init();
+
+	bool login(std::string name);
+
 	int end();
 
 	void move(uint32_t line_idx, int speed, uint32_t train_idx);
 
 	void turn();
+
+	void get_login_response(json jLoginResp);
 };
 
