@@ -14,14 +14,14 @@ enum class Response : uint32_t {
 };
 
 struct ResponseMessage {
-	Response result;
+	Response resp_code;
 	size_t data_length;
 	char* data;
 
 	ResponseMessage() : data(nullptr) {};
 
 	ResponseMessage(const Response &res, const size_t &len, const char* const msg) : 
-									result(res), data_length(len) {
+									resp_code(res), data_length(len) {
 
 		data = new char[1];		//for initialization	
 		copy_string(this->data, len, msg);
@@ -29,16 +29,16 @@ struct ResponseMessage {
 
 	ResponseMessage(const ResponseMessage &msg) {
 		data = new char[1];		//for initialization
-		set(msg.result, msg.data_length, msg.data);
+		set(msg.resp_code, msg.data_length, msg.data);
 	}
 
 	ResponseMessage & operator=(const ResponseMessage &msg) {
-		set(msg.result, msg.data_length, msg.data);
+		set(msg.resp_code, msg.data_length, msg.data);
 		return *this;
 	}
 
 	void set(Response new_result, size_t new_data_len, const char* new_data) {
-		this->result = new_result;
+		this->resp_code = new_result;
 		this->data_length = new_data_len;
 
 		copy_string(this->data, new_data_len, new_data);

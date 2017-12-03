@@ -11,24 +11,46 @@ void to_json(json & j, const Line & line) {
 	j = json{ { "idx", line.idx },{ "length", line.length },{ "point", line.points } };
 }
 
-void to_json(json & j, const Market & m) {
+//void to_json(json & j, const Post & m) {
+//	j = json{
+//		{"idx", m.idx},
+//		{"name", m.name},
+//		{"product", m.product},
+//		{ "product_capacity", m.capacity },
+//		{ "replenishment", m.replenishment },
+//		{ "type", m.type },
+//	};
+//}
+//
+//void to_json(json & j, const Town & t) {
+//	j = json{
+//		{ "id", t.id },
+//		{ "name", t.name },
+//		{ "product", t.product },
+//		{ "population", t.population },
+//		{ "type", t.type },
+//	};
+//}
+
+
+void to_json(json & j, const Market& post)
+{
 	j = json{
-		{"idx", m.idx},
-		{"name", m.name},
-		{"product", m.product},
-		{ "product_capacity", m.capacity },
-		{ "replenishment", m.replenishment },
-		{ "type", m.type },
+		{ "idx", post.idx },
+		{ "name", post.name },
+		{ "product", post.product },
+		{ "product_capacity", post.product_capacity },
+		{ "replenishment", post.replenishment } 
 	};
 }
 
-void to_json(json & j, const Town & t) {
+void to_json(json & j, const Town& town)
+{
 	j = json{
-		{ "id", t.id },
-		{ "name", t.name },
-		{ "product", t.product },
-		{ "population", t.population },
-		{ "type", t.type },
+		{ "idx", town.idx },
+		{ "name", town.name },
+		{ "population", town.population },
+		{ "product", town.product } 
 	};
 }
 
@@ -48,21 +70,18 @@ void from_json(const json & j, Line & line) {
 	line.points = j.at("point").get<std::pair<uint32_t, uint32_t>>();
 }
 
-void from_json(const json & j, Market & m){
-	m.idx = j.at("idx").get<uint32_t>();
-	m.name = j.at("name").get<std::string>();
-
-	m.product = j.at("product").get<uint32_t>();
-	m.capacity = j.at("product_capacity").get<uint32_t>();
-	m.replenishment = j.at("replenishment").get<uint32_t>();
-	m.type = j.at("type").get<uint32_t>();
+void from_json(const json & j, Market & post) {
+	post.idx = j.at("idx").get<uint32_t>();
+	post.name = j.at("name").get<std::string>();
+	post.product = j.at("product").get<uint32_t>();
+	post.product_capacity = j.at("product_capacity").get<uint32_t>();
+	post.replenishment = j.at("replenishment").get<uint32_t>();
 }
 
-void from_json(const json & j, Town & t) {
-	t.id = j.at("id").get<uint32_t>();
-	t.name = j.at("name").get<std::string>();
-
-	t.product = j.at("product").get<uint32_t>();
-	t.population = j.at("population").get<uint32_t>();
-	t.type = j.at("type").get<uint32_t>();
+void from_json(const json & j, Town & town) {
+	// town.armor = j.at("armor").get<uint32_t>();
+	town.idx = j.at("idx").get<uint32_t>();
+	town.name = j.at("name").get<std::string>();
+	town.product = j.at("product").get<uint32_t>();
+	town.population = j.at("population").get<uint32_t>();
 }

@@ -40,29 +40,35 @@ void game::get_static_map() {
 	//}
 }
 
-void game::init_dynamic_map() {
+bool game::init_dynamic_map() {
 	ResponseMessage resp;
 	get_layer_response(layer::DYNAMIC, resp);
+
+	if (resp.resp_code != Response::OKEY) {
+		return false;
+	}
+
 	std::cout << "dynamic map:\n" << resp.data << std::endl;
 
-	json jDynamicMap(resp.data);
+	json jMapResp = json::parse(resp.data);
 
-	// it does not work :(
-	//for (auto post : jDynamicMap.at("post")) {
-	//	if (post["type"] == post_type::TOWN) {
-	//		Town t(post);
-	//		towns[t.id] = t;
-	//	}
-	//	else if (post["type"] == post_type::MARKET) {
-	//		Market m(post);
-	//		m.point_id = markets_location[m.idx];
-	//		markets[m.idx] = m;
-	//	}
-	//}
-
-	for (auto train : jDynamicMap.at("train")) {
-
+	for (auto post : jMapResp.at("post")) {
+		if (post["type"] == post_type::TOWN) {
+			Town t(post);
+			towns[t.idx] = t;
+		} else if (post["type"] == post_type::MARKET) {
+			Market m(post);
+			m.point_id = markets_location[m.idx];
+			markets[m.idx] = m;
+		}
 	}
+
+	std::list<Train> trainsList = jMapResp.at("train").get<std::list<Train>>();
+	for (auto train : trainsList) {
+		trains[train.idx] = train;
+	}
+
+	return true;
 }
 
 void game::get_layer_response(layer type, ResponseMessage& resp) {
@@ -96,6 +102,18 @@ bool game::init() {
 	get_static_map();
 	init_dynamic_map();
 
+	std::cout << "markets:" << std::endl;
+	for (auto market : markets) {
+		std::cout << market.first << "-" << json(market.second) <<
+			"-" << market.second.point_id << std::endl;
+	}
+
+	//for (auto train : trains) {
+	//	std::cout << train.first << "-" << json(train.second) << std::endl;
+	//}
+
+
+
 	return true;
 }
 
@@ -125,18 +143,35 @@ bool game::login(std::string name) {
 	return true;
 }
 
-void game::move(uint32_t line_idx, int speed, uint32_t train_idx) {
-	// TODO CHECK IT TOO
-	json jMove = json({ { "line_idx", line_idx }, { "speed", speed }, { "train_idx", train_idx } });
-	std::string strMove = jMove.dump();
-	ActionMessage act = ActionMessage(Action::MOVE, strMove);
-	socket.Send(act);
+bool game::move(uint32_t line_idx, int speed, uint32_t train_idx) {
+	json jMove({ 
+		{ "line_idx", line_idx }, 
+		{ "speed", speed }, 
+		{ "train_idx", train_idx } 
+	});
+
+	ActionMessage act = ActionMessage(Action::MOVE, jMove.dump());
+	ResponseMessage resp;
+	socket.make_move(act, resp);
+
+	if (resp.resp_code != Response::OKEY) {
+		return false;
+	}
+
+	return true;
 }
 
-void game::turn() {
+bool game::turn() {
 	// TODO: CHECK IT
-	ActionMessage act = ActionMessage(Action::TURN, std::string(""));
-	socket.Send(act);
+	ActionMessage act = ActionMessage(Action::TURN, std::string("{}"));
+	ResponseMessage resp;
+	socket.make_move(act, resp);
+
+	if (resp.resp_code != Response::OKEY) {
+		return false;
+	}
+
+	return true;
 }
 
 void game::get_login_response(json jLoginResp) {
@@ -148,7 +183,7 @@ void game::get_login_response(json jLoginResp) {
 
 	idx = jLoginResp["idx"].get<std::string>();
 
-	std::list<Train> trains_list;
+	std::list<Train> trains_list; //мб не надо тут, ибо получаем ту же инфу в динам.карте
 	if (jLoginResp["train"].size() != 0) {
 		trains_list = jLoginResp["train"].get<std::list<Train>>();
 		for (auto train : trains_list) {

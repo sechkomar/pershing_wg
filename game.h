@@ -24,7 +24,7 @@ namespace game
 
 
 	void get_static_map();
-	void init_dynamic_map();
+	bool init_dynamic_map();
 
 	void get_layer_response(layer layer_type, ResponseMessage& resp);
 
@@ -34,9 +34,9 @@ namespace game
 
 	int end();
 
-	void move(uint32_t line_idx, int speed, uint32_t train_idx);
+	bool move(uint32_t line_idx, int speed, uint32_t train_idx);
 
-	void turn();
+	bool turn();
 
 	void get_login_response(json jLoginResp);
 };

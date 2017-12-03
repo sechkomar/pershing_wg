@@ -43,30 +43,18 @@ struct Market {		//post.type == 2
 	std::string name; //maybe not necessary
 
 	uint32_t product;
-	uint32_t capacity;
+	uint32_t product_capacity;
 	uint32_t replenishment;
-	uint32_t type;	//maybe not necessary
 
 	uint32_t point_id; //not in json
-
-	Market(uint32_t idx, uint32_t point_id) :
-		idx(idx), point_id(point_id) {
-		product = 0;
-		capacity = 0;
-		replenishment = 0;
-		type = 2;
-	}
-
-	Market() {}
 };
 
 struct Town { //post.type == 1
-	uint32_t id;
+	uint32_t idx;
 	std::string name; //maybe not necessary
+
 	uint32_t population;
 	uint32_t product;
-
-	uint32_t type; //maybe not necessary
 };
 
 void to_json(json& j, const Train& t);
