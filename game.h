@@ -15,10 +15,18 @@ namespace game
 	static std::string idx;
 	static std::map<uint32_t, std::vector<Endpoint>> map;
 
+	static std::map<uint32_t, Market> markets;
+	static std::map<uint32_t, Town> towns;
+
+	static std::map<uint32_t, uint32_t> markets_location; //market_id -> post_id
+	
 	static Socket socket;
 
 
-	void get_map();
+	void get_static_map();
+	void init_dynamic_map();
+
+	void get_layer_response(layer layer_type, ResponseMessage& resp);
 
 	bool init();
 

@@ -2,44 +2,82 @@
 #include "objects.h"
 #include "game.h"
 
-void game::get_map() // TODO TODO
-{
-	json jLayer0;
-	jLayer0["layer"] = 0;
+void game::get_static_map() {
 
-	std::string strLayer0 = jLayer0.dump();
-	ActionMessage act(Action::MAP, strLayer0);
 	ResponseMessage resp;
-	socket.make_move(act, resp);
-	//TODO save map
+	get_layer_response(layer::STATIC, resp);
 
-	json jMapResp(resp.data);
+	std::cout << "static_map:\n" << resp.data << std::endl;
+
+	json jMapResp = json::parse(resp.data);
 
 	std::list<Line> lines = jMapResp.at("line").get<std::list<Line>>();
 
-	for (auto line : lines)
-	{
+	for (auto line : lines) {
 		Endpoint in, out;
 		in.line_idx = line.idx;
-		in.end = line.point.second;
+		in.end = line.points.second;
 		in.length = line.length;
 		in.direction = 1;
-		map[line.point.first].push_back(in);
+		map[line.points.first].push_back(in);
 
 		out.line_idx = line.idx;
-		out.end = line.point.first;
+		out.end = line.points.first;
 		out.length = line.length;
 		out.direction = -1;
-		map[line.point.second].push_back(out);
+		map[line.points.second].push_back(out);
 	}
+
+	for (auto point : jMapResp.at("point")) {
+		if (!point["post_id"].is_null() && point["idx"] != home.idx) {
+			markets_location[point["post_id"]] = point["idx"];
+		}
+	}
+
+	//std::cout << "markets:" << std::endl;
+	//for (auto m : markets) {
+	//	std::cout << m.first << "-" << json(m.second) << "-" << m.second.point_id << std::endl;
+	//}
+}
+
+void game::init_dynamic_map() {
+	ResponseMessage resp;
+	get_layer_response(layer::DYNAMIC, resp);
+	std::cout << "dynamic map:\n" << resp.data << std::endl;
+
+	json jDynamicMap(resp.data);
+
+	// it does not work :(
+	//for (auto post : jDynamicMap.at("post")) {
+	//	if (post["type"] == post_type::TOWN) {
+	//		Town t(post);
+	//		towns[t.id] = t;
+	//	}
+	//	else if (post["type"] == post_type::MARKET) {
+	//		Market m(post);
+	//		m.point_id = markets_location[m.idx];
+	//		markets[m.idx] = m;
+	//	}
+	//}
+
+	for (auto train : jDynamicMap.at("train")) {
+
+	}
+}
+
+void game::get_layer_response(layer type, ResponseMessage& resp) {
+	json jLayer;
+	jLayer["layer"] = type;
+
+	std::string strLayer = jLayer.dump();
+	ActionMessage act(Action::MAP, strLayer);
+	socket.make_move(act, resp);
 }
 
 bool game::init() {
 	const char* HOST_NAME = "wgforge-srv.wargaming.net";
 	const char* PORT = "443";
 	std::string CLIENT_NAME = "Pershing";
-
-	
 
 	if (socket.Connect(HOST_NAME, PORT)) {
 		std::cout << "Error while connecting." << std::endl;
@@ -51,10 +89,12 @@ bool game::init() {
 		return false;
 	}
 
-	for (auto train : trains) {
-		std::cout << json(train) << std::endl;
-	}
+	//for (auto train : trains) {
+	//	std::cout << json(train) << std::endl;
+	//}
 
+	get_static_map();
+	init_dynamic_map();
 
 	return true;
 }
@@ -74,7 +114,7 @@ bool game::login(std::string name) {
 		return false;
 	}
 
-	std::cout << resp.data << std::endl;
+	std::cout << "login response:\n" << resp.data << std::endl;
 
 	json jLoginResp = json::parse(resp.data);
 	get_login_response(jLoginResp);
@@ -109,14 +149,11 @@ void game::get_login_response(json jLoginResp) {
 	idx = jLoginResp["idx"].get<std::string>();
 
 	std::list<Train> trains_list;
-
 	if (jLoginResp["train"].size() != 0) {
 		trains_list = jLoginResp["train"].get<std::list<Train>>();
-
 		for (auto train : trains_list) {
 			trains[train.idx] = train;
 		}
-
 	}
 
 }
