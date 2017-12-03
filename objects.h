@@ -5,14 +5,12 @@
 #include "nlohmann-json\json.hpp"
 using json = nlohmann::json;
 
-struct Home
-{
+struct Home {
 	uint32_t idx;
 	uint32_t post_id;
 };
 
-struct Train
-{
+struct Train {
 	uint32_t idx;
 	uint32_t line_idx;
 	std::string player_id;
@@ -21,17 +19,22 @@ struct Train
 
 	uint32_t capacity;
 	uint32_t product;
+
+	void set(uint32_t line_idx_, uint32_t position_, uint32_t speed_, uint32_t product_) {
+		line_idx = line_idx_;
+		position = position_;
+		speed = speed_;
+		product = product_;
+	}
 };
 
-struct Line
-{
+struct Line {
 	uint32_t idx;
 	uint32_t length;
 	std::pair<uint32_t, uint32_t> points;
 };
 
-struct Endpoint
-{
+struct Endpoint {
 	uint32_t end;
 	uint32_t line_idx;
 	uint32_t length;
@@ -47,6 +50,10 @@ struct Market {		//post.type == 2
 	uint32_t replenishment;
 
 	uint32_t point_id; //not in json
+
+	void set(uint32_t product_){
+		product = product_;
+	}
 };
 
 struct Town { //post.type == 1
@@ -55,6 +62,12 @@ struct Town { //post.type == 1
 
 	uint32_t population;
 	uint32_t product;
+
+	void set(uint32_t population_, uint32_t product_) {
+		population = population_;
+		product = product_;
+	}
+		
 };
 
 void to_json(json& j, const Train& t);

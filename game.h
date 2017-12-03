@@ -23,7 +23,7 @@ namespace game
 	static Socket socket;
 
 
-	void get_static_map();
+	void init_static_map();
 	bool init_dynamic_map();
 
 	void get_layer_response(layer layer_type, ResponseMessage& resp);
@@ -37,6 +37,12 @@ namespace game
 	bool move(uint32_t line_idx, int speed, uint32_t train_idx);
 
 	bool turn();
+
+	bool update();
+
+	void print_trains();
+
+	void print_markets();
 
 	void get_login_response(json jLoginResp);
 };

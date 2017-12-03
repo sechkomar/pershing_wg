@@ -15,6 +15,15 @@ int main(int argc, char* argv[]) {
 		return EXIT_FAILURE;
 	}
 
+	game::update();
+
+	game::move(13, 1, 0);
+	game::turn();
+	game::move(13, 1, 0);
+	game::turn();
+	game::update();
+
+
 	int result = game::end();
 	
 	system("pause");

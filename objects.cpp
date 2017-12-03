@@ -2,50 +2,38 @@
 
 
 void to_json(json& j, const Train& t) {
-	j = json{ { "idx", t.idx },{ "line_idx", t.line_idx },{ "player_id", t.player_id },
-	{ "position", t.position },{ "speed", t.speed },
-	{"capacity", t.capacity}, {"product", t.product} };
+	j = json{ 
+		{ "idx", t.idx },
+		{ "line_idx", t.line_idx },
+	//	{ "player_id", t.player_id },
+		{ "position", t.position },
+		{ "speed", t.speed },
+		{"capacity", t.capacity}, 
+		{"product", t.product} 
+	};
 }
 
 void to_json(json & j, const Line & line) {
-	j = json{ { "idx", line.idx },{ "length", line.length },{ "point", line.points } };
+	j = json{ 
+		{ "idx", line.idx },
+		{ "length", line.length },
+		{ "point", line.points } 
+	};
 }
 
-//void to_json(json & j, const Post & m) {
-//	j = json{
-//		{"idx", m.idx},
-//		{"name", m.name},
-//		{"product", m.product},
-//		{ "product_capacity", m.capacity },
-//		{ "replenishment", m.replenishment },
-//		{ "type", m.type },
-//	};
-//}
-//
-//void to_json(json & j, const Town & t) {
-//	j = json{
-//		{ "id", t.id },
-//		{ "name", t.name },
-//		{ "product", t.product },
-//		{ "population", t.population },
-//		{ "type", t.type },
-//	};
-//}
 
-
-void to_json(json & j, const Market& post)
-{
+void to_json(json & j, const Market& post) {
 	j = json{
 		{ "idx", post.idx },
 		{ "name", post.name },
 		{ "product", post.product },
 		{ "product_capacity", post.product_capacity },
-		{ "replenishment", post.replenishment } 
+		{ "replenishment", post.replenishment }, 
+		{"point_id", post.point_id}  //not in original json
 	};
 }
 
-void to_json(json & j, const Town& town)
-{
+void to_json(json & j, const Town& town) {
 	j = json{
 		{ "idx", town.idx },
 		{ "name", town.name },
