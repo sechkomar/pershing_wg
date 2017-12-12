@@ -5,27 +5,27 @@
 #include <algorithm>
 #include <numeric>
 
-namespace path {
+class CalculatePath {
 	//--- const ---
-	std::vector<std::vector<uint32_t>> distances;
+	std::vector<uint32_t> market_indices;
+
+	std::map<uint32_t, std::map<uint32_t, uint32_t>> distances;
 	uint32_t train_capacity;
 	std::map<uint32_t, uint32_t> replenishments; //<market idx, value>
 	std::map<uint32_t, uint32_t> capacities;
 
 	uint32_t population;
-	uint32_t product_in_town;
+	uint32_t home_point_idx;
 
 	//--- need to update ---
+	uint32_t product_in_town;
 
 	std::map<uint32_t, uint32_t> initial_products;
 	std::map<uint32_t, uint32_t> expected_products;
 
-
-	// !! the first idx - idx of our town 
-	std::vector<uint32_t> curr_path;	
+	std::vector<uint32_t> curr_path; // !! the first idx - idx of our town 
 
 	std::vector<uint32_t> curr_lens;
-
 	int32_t profit; // может быть отрицательным
 
 
@@ -38,6 +38,7 @@ namespace path {
 	}
 
 	uint32_t calculate_path_len() {
+		update_curr_lens();
 		return std::accumulate(curr_lens.begin(), curr_lens.end(), 0);
 	}
 
@@ -76,7 +77,7 @@ namespace path {
 	// auxiliary function
 	uint32_t received_product(uint32_t before_last) {
 		uint32_t left_on_train = train_capacity - before_last;
-		uint32_t received = before_last + min(left_on_train, 
+		uint32_t received = before_last + min(left_on_train,
 			expected_products[curr_path[curr_path.size() - 1]]);
 		return received;
 	}
@@ -85,13 +86,29 @@ namespace path {
 		return train_capacity > before_last;
 		//если false, будет другая перестановка, в которой будет такой же путь, но без последнего узла
 	}
-	
+
 	void calculate_profit(uint32_t path_len, uint32_t before_last) {
 		profit = received_product(before_last) - population * path_len;
 	}
 
+	std::vector<std::vector<uint32_t>> get_subsets(std::vector<uint32_t> arr) {
+		//TODO replaced by next_subset
+		int subsets_count = 1 << arr.size();
+		std::vector<std::vector<uint32_t>> res(subsets_count);
+
+		for (int i = 0; i < subsets_count; i++) {
+			for (int k = 0; k < arr.size(); k++) {
+				//if the k-th bit is set
+				if ((1 << k) & i) {
+					res[i].push_back(arr[k]);
+				}
+			}
+		}
+		res.erase(res.begin());
+		return res;
+	}
+
 	bool check() {
-		update_curr_lens();
 		uint32_t path_len = calculate_path_len();
 		if (!check_path_len(path_len)) {
 			return false;
@@ -105,30 +122,67 @@ namespace path {
 		}
 
 		calculate_profit(path_len, before_last);
-		return profit >= 0;
+		//return profit >= 0;
+		return true;
+	}
+
+	void set_curr_path(const std::vector<uint32_t> &path) {
+		this->curr_path.clear();
+		this->curr_path.assign(path.begin(), path.end());
+		this->curr_path.insert(this->curr_path.begin(), home_point_idx);
+	}
+
+
+
+public:
+	CalculatePath(const std::map<uint32_t, std::map<uint32_t, uint32_t>> &distances, uint32_t train_capacity,
+		const std::map<uint32_t, uint32_t> &replenishments, const std::map<uint32_t, uint32_t> &capacities,
+		uint32_t population, uint32_t home_idx, std::vector<uint32_t> market_indices) {
+
+		this->distances = distances;
+		this->train_capacity = train_capacity;
+		this->replenishments = replenishments;
+		this->capacities = capacities;
+		this->population = population;
+		this->home_point_idx = home_idx;
+		this->market_indices = market_indices;
+	}
+
+
+	void set_product_in_town(uint32_t product) {
+		this->product_in_town = product;
+	}
+
+	void set_init_products(std::map<uint32_t, uint32_t> init_products) {
+		initial_products = init_products;
 	}
 
 	int32_t get_profit() {
 		return profit;
 	}
 
-	std::vector<std::vector<uint32_t>> get_subsets(std::vector<uint32_t> arr) { 
-		//TODO replaced by next_subset
+	std::vector<uint32_t> find_pathways() {
+		auto subsets = get_subsets(market_indices);
 
-		int subsets_count = 1 << arr.size();
-		std::vector<std::vector<uint32_t>> res(subsets_count);
+		int32_t max_profit = 0;
+		int32_t profit;
+		std::vector<uint32_t> best;
 
-		for (int i = 0; i < subsets_count; i++) {
-			for (int k = 0; k < arr.size(); k++) {
-				//if the k-th bit is set
-				if ((1 << k) & i) {
-					res[i].push_back(arr[k]);
+		for (auto set : subsets) {
+			do {
+				set_curr_path(set);
+				if (check() && (profit = get_profit()) > max_profit) {
+					max_profit = profit;
+					best = set;
 				}
-			}
+			} while (std::next_permutation(set.begin(), set.end()));
 		}
-		return res;
+		//for (auto n : best) {
+		//	std::cout << n << " ";
+		//}
+		std::cout << "profit=" << max_profit << std::endl;
+		return best;
 	}
-
 };
 
 

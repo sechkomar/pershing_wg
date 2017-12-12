@@ -3,20 +3,19 @@
 
 #include "common.h"
 
-enum class Action: uint32_t {
-    LOGIN = 1,
-    LOGOUT = 2,
-    MOVE = 3,
-    TURN = 5,
-    MAP = 10
+enum class Action : uint32_t {
+	LOGIN = 1,
+	LOGOUT = 2,
+	MOVE = 3,
+	UPGRADE = 4,
+	TURN = 5,
+	MAP = 10
 };
 
 struct ActionMessage {
-
 	Action action_code;
 	size_t data_length;
 	char* data;
-
 
 	ActionMessage(const Action &code, std::string &msg) : action_code(code) {
 		data_length = msg.length();

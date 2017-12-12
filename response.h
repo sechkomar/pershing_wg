@@ -10,7 +10,7 @@ enum class Response : uint32_t {
 	RESOURCE_NOT_FOUND = 2,
 	PATH_NOT_FOUND = 3,
 	ACCESS_DENIED = 5,
-	NO_RESULT
+	NO_RESULT = 6
 };
 
 struct ResponseMessage {
@@ -20,8 +20,8 @@ struct ResponseMessage {
 
 	ResponseMessage() : data(nullptr) {};
 
-	ResponseMessage(const Response &res, const size_t &len, const char* const msg) : 
-									resp_code(res), data_length(len) {
+	ResponseMessage(const Response &res, const size_t &len, const char* const msg) :
+		resp_code(res), data_length(len) {
 
 		data = new char[1];		//for initialization	
 		copy_string(this->data, len, msg);

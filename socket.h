@@ -1,5 +1,4 @@
 #pragma once
-
 #include <winsock2.h>
 #include <WS2tcpip.h>
 #pragma comment(lib, "Ws2_32.lib")
@@ -10,14 +9,14 @@
 #include "response.h"
 #include "action.h"
 
-class Socket 
+class Socket
 {
 	SOCKET sock;
 public:
 	Socket() {
 		WSADATA wsaData;
-    	WSAStartup(MAKEWORD(2, 2), &wsaData);
-    	sock = socket(AF_INET, SOCK_STREAM, 0);
+		WSAStartup(MAKEWORD(2, 2), &wsaData);
+		sock = socket(AF_INET, SOCK_STREAM, 0);
 	};
 
 	int Connect(const char* host_name, const char* port) const {
@@ -33,9 +32,9 @@ public:
 	};
 
 	void Send(const ActionMessage& act) const {
-		
+
 		send(sock, act.get_string_action_code(), sizeof(uint32_t), 0);
-		if (act.data_length != NULL) { 
+		if (act.data_length != NULL) {
 			send(sock, act.get_string_data_length(), sizeof(uint32_t), 0);
 			send(sock, act.data, act.data_length, 0);
 		}
@@ -44,19 +43,19 @@ public:
 	void Receive(ResponseMessage& res) const {
 		uint32_t resCode;
 		uint32_t datLen;
-		
+
 		int received = recv(sock, reinterpret_cast<char*>(&resCode), sizeof(uint32_t), 0);
 		if (received < 4) {
 			res = ResponseMessage(Response::NO_RESULT, 0, "");
 			return;
 		}
-			
+
 		received = recv(sock, reinterpret_cast<char*>(&datLen), sizeof(uint32_t), 0);
 		if (received < 4) {
 			res = ResponseMessage(Response::NO_RESULT, 0, "");
 			return;
 		}
-			
+
 		size_t bytesLeft = datLen;
 		size_t size;
 
@@ -76,10 +75,10 @@ public:
 	}
 	void Disconnect() {
 		closesocket(sock);
-    	WSACleanup();
+		WSACleanup();
 	};
 
 	~Socket() {
 		Disconnect();
 	}
-};	
+};

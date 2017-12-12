@@ -1,26 +1,35 @@
 #pragma once
-
 #include <map>
 #include <string>
 #include <vector>
 #include "objects.h"
 #include "socket.h"
+#include <fstream>
 
 
-namespace game
+class Game
 {
+public:
+	Home home;
+	std::map<uint32_t, Train> trains;
+	std::string idx;
+	uint32_t turn_number = 1;
+	std::map<uint32_t, std::vector<Endpoint>> map;
 
-	static Home home;
-	static std::map<uint32_t, Train> trains;
-	static std::string idx;
-	static std::map<uint32_t, std::vector<Endpoint>> map;
+	std::map<uint32_t, Market> markets;
+	std::map<uint32_t, Town> towns;
 
-	static std::map<uint32_t, Market> markets;
-	static std::map<uint32_t, Town> towns;
+	std::map<uint32_t, uint32_t> markets_location; //market_id -> post_id
 
-	static std::map<uint32_t, uint32_t> markets_location; //market_id -> post_id
-	
-	static Socket socket;
+	Socket socket;
+
+	std::map<uint32_t, std::map<uint32_t, std::map<uint32_t, std::vector<uint32_t>>>> min_pathes;
+
+
+	std::ofstream fcoord;
+	//std::ofstream fstatic;
+	//std::ofstream fdynamic;
+	//std::ofstream log;
 
 
 	void init_static_map();
@@ -40,10 +49,27 @@ namespace game
 
 	bool update();
 
+	bool upgrade(std::list<Town> posts_, std::list<Train> trains_);
+
 	void print_trains();
 
 	void print_markets();
 
+	void print_towns();
+
+	void print_lines();
+
 	void get_login_response(json jLoginResp);
+
+	void Dijkstra(const size_t &);
+
+	void shopping(const std::vector<uint32_t> &, const uint32_t &);
+
+	std::map<uint32_t, std::map<uint32_t, uint32_t>> get_min_markets_pathes();
+	std::map<uint32_t, uint32_t> get_replenishments();
+	std::map<uint32_t, uint32_t> get_capacities();
+	std::map<uint32_t, uint32_t> get_markets_product();
+	std::vector<uint32_t> get_market_point_id();
+	std::vector<uint32_t> get_full_path(std::vector<uint32_t>);
 };
 
