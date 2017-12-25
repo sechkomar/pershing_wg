@@ -1,4 +1,5 @@
 #pragma once
+ 
 #include <winsock2.h>
 #include <WS2tcpip.h>
 #pragma comment(lib, "Ws2_32.lib")
@@ -25,14 +26,13 @@ public:
 
 		if (get_addr_result) {
 			std::cout << "Error: Connection failed with error " << get_addr_result << std::endl;
-			return -1;
+			return SOCKET_ERROR;
 		}
 
 		return connect(sock, dest_addr->ai_addr, dest_addr->ai_addrlen);
 	};
 
 	void Send(const ActionMessage& act) const {
-
 		send(sock, act.get_string_action_code(), sizeof(uint32_t), 0);
 		if (act.data_length != NULL) {
 			send(sock, act.get_string_data_length(), sizeof(uint32_t), 0);
@@ -41,7 +41,7 @@ public:
 	};
 
 	void Receive(ResponseMessage& res) const {
-		uint32_t resCode;
+		Response resCode;
 		uint32_t datLen;
 
 		int received = recv(sock, reinterpret_cast<char*>(&resCode), sizeof(uint32_t), 0);
@@ -65,14 +65,14 @@ public:
 			bytesLeft -= size;
 		}
 		datBuf[datLen] = '\0';
-		// THERE THERE -------------------------------------------------------------------
-		res.set(static_cast<Response>(resCode), datLen, datBuf);
+		res = ResponseMessage(resCode, datLen, datBuf);
 	};
 
 	void make_move(const ActionMessage& act, ResponseMessage &msg) const {
 		Send(act);
 		Receive(msg);
-	}
+	};
+
 	void Disconnect() {
 		closesocket(sock);
 		WSACleanup();
@@ -82,3 +82,34 @@ public:
 		Disconnect();
 	}
 };
+
+
+/*void Receive(ResponseMessage& res) const {
+	uint32_t resCode;
+	uint32_t datLen;
+
+	int received = recv(sock, reinterpret_cast<char*>(&resCode), sizeof(uint32_t), 0);
+	if (received < 4) {
+		res = ResponseMessage(Response::NO_RESULT, 0, "");
+		return;
+	}
+
+	received = recv(sock, reinterpret_cast<char*>(&datLen), sizeof(uint32_t), 0);
+	if (received < 4) {
+		res = ResponseMessage(Response::NO_RESULT, 0, "");
+		return;
+	}
+
+	size_t bytesLeft = datLen;
+	size_t size;
+
+	char* datBuf = new char[datLen + 1];
+	while (bytesLeft > 0) {
+		size = recv(sock, datBuf + (datLen - bytesLeft), bytesLeft, 0);
+		bytesLeft -= size;
+	}
+	datBuf[datLen] = '\0';
+	// THERE THERE -------------------------------------------------------------------
+	//res = ResponseMessage(resCode, datLen, datBuf);
+	res.set(static_cast<Response>(resCode), datLen, datBuf);
+};*/

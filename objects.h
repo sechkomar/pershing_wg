@@ -1,4 +1,5 @@
 #pragma once
+ 
 #include <string>
 #include <list>
 #include "nlohmann-json\json.hpp"
@@ -17,9 +18,11 @@ struct Event {
 };
 
 struct Train {
+	uint32_t cooldown;
 	std::list<Event> events;
 	uint32_t goods;
 	uint32_t goods_capacity;
+	uint32_t last_point_id; //not in json
 	uint32_t idx;
 	uint32_t level;
 	uint32_t line_idx;
@@ -28,13 +31,7 @@ struct Train {
 	uint32_t position;
 	uint32_t post_type;
 	uint32_t speed;
-
-	void set(uint32_t line_idx_, uint32_t position_, uint32_t speed_, uint32_t goods_) {
-		line_idx = line_idx_;
-		position = position_;
-		speed = speed_;
-		goods = goods_;
-	}
+	std::vector<uint32_t> current_path;
 };
 
 struct Line {
@@ -47,10 +44,12 @@ struct Endpoint {
 	uint32_t end;
 	uint32_t line_idx;
 	uint32_t length;
-	uint32_t direction;
+	int direction;
+	Endpoint(uint32_t _end, uint32_t _line_idx, uint32_t _length, int _direction) :
+		end(_end), line_idx(_line_idx), length(_length), direction(_direction) {};
 };
 
-struct Market {		//post.type == 2
+struct Market {		//post_type == 2
 	std::list<Event> events;
 	uint32_t idx;
 	std::string name;
@@ -58,10 +57,16 @@ struct Market {		//post.type == 2
 	uint32_t product;
 	uint32_t product_capacity;
 	uint32_t replenishment;
+};
 
-	void set(uint32_t product_) {
-		product = product_;
-	}
+struct Storage {		//post.type == 3
+	std::list<Event> events;
+	uint32_t idx;
+	std::string name;
+	uint32_t point_id;
+	uint32_t armor;
+	uint32_t armor_capacity;
+	uint32_t replenishment;
 };
 
 struct Town {		//post.type == 1
@@ -70,7 +75,7 @@ struct Town {		//post.type == 1
 	std::list<std::string> events;
 	uint32_t idx;
 	uint32_t level;
-	std::string name;
+	std::string name; 
 	uint32_t next_level_price;
 	std::string player_id;
 	uint32_t point_id;
@@ -78,32 +83,30 @@ struct Town {		//post.type == 1
 	uint32_t population_capacity;
 	uint32_t product;
 	uint32_t product_capacity;
-
-	void set(uint32_t population_, uint32_t product_) {
-		population = population_;
-		product = product_;
-	}
+	uint32_t train_cooldown_on_collision;
 };
 
 void to_json(json& j, const Train& t);
 void to_json(json& j, const Line& t);
 void to_json(json& j, const Market& t);
+void to_json(json& j, const Storage& t);
 void to_json(json& j, const Town& t);
 
 void from_json(const json& j, Train& t);
 void from_json(const json& j, Line& t);
 void from_json(const json& j, Market& t);
+void from_json(const json& j, Storage& t);
 void from_json(const json& j, Town& t);
 
 enum layer : uint32_t {
 	STATIC = 0,
-	DYNAMIC = 1,
-	COORDINATES = 10
+	DYNAMIC = 1
 };
 
 enum post_type : uint32_t {
 	TOWN = 1,
-	MARKET = 2
+	MARKET = 2,
+	STORAGE = 3
 };
 
 enum event_type : uint32_t {

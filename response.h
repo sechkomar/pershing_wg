@@ -1,8 +1,6 @@
 #pragma once
+ 
 #include <inttypes.h>
-
-#include "common.h"
-
 
 enum class Response : uint32_t {
 	OKEY = 0,
@@ -22,26 +20,17 @@ struct ResponseMessage {
 
 	ResponseMessage(const Response &res, const size_t &len, const char* const msg) :
 		resp_code(res), data_length(len) {
-
-		data = new char[1];		//for initialization	
-		copy_string(this->data, len, msg);
-	}
-
-	ResponseMessage(const ResponseMessage &msg) {
-		data = new char[1];		//for initialization
-		set(msg.resp_code, msg.data_length, msg.data);
+		data = new char[len + 1];
+		memcpy(data, msg, len + 1);
 	}
 
 	ResponseMessage & operator=(const ResponseMessage &msg) {
-		set(msg.resp_code, msg.data_length, msg.data);
+		resp_code = msg.resp_code;
+		data_length = msg.data_length;
+		delete data;
+		data = new char[msg.data_length + 1];
+		memcpy(data, msg.data, msg.data_length + 1);
 		return *this;
-	}
-
-	void set(Response new_result, size_t new_data_len, const char* new_data) {
-		this->resp_code = new_result;
-		this->data_length = new_data_len;
-
-		copy_string(this->data, new_data_len, new_data);
 	}
 
 	~ResponseMessage() {

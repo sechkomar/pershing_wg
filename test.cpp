@@ -1,54 +1,57 @@
+
 #include "game.h"
-#include "path.h"
-#include <string>
-#include <iostream>
-#include <fstream>
-
-
 #pragma execution_character_set("utf-8")
 
 int main(int argc, char* argv[]) {
-
-	std::ofstream log("log.txt");
 	Game game;
-	if (!game.init()) {
+
+	if (!game.init("persing1", 1, "TEST_GAME")) {
 		return EXIT_FAILURE;
 	}
 
-	//std::list<Train> trains_to_upgrade;
-	//std::list<Town> posts_to_upgrade;
-	//trains_to_upgrade.push_back(game.trains.at(1));
-	//posts_to_upgrade.push_back(game.towns.at(1));
-	//game.upgrade(posts_to_upgrade, towns_to_upgrade);		 upgrade costs both armor and product
 
-	game.Dijkstra(game.home.idx);
-	for (auto market : game.markets) {
-		game.Dijkstra(market.second.point_id);
-	}
+	std::list<uint32_t> trains_to_upgrade;
+	std::list<uint32_t> towns_to_upgrade;
 
-	auto repls = game.get_replenishments();
-	auto capas = game.get_capacities();
-	auto markets_point_id = game.get_market_point_id();
 
-	auto min_markets_pathes = game.get_min_markets_pathes();
+	for (int i = 0;; i++) {
 
-	CalculatePath path(min_markets_pathes, game.trains[0].goods, repls, capas,
-		game.towns[1].population, game.home.idx, game.get_market_point_id());
+		if (game.towns.at(game.home.post_id).armor * 1.5 >= game.towns.at(game.home.post_id).armor_capacity &&
+			game.towns.at(game.home.post_id).product * 1.5 >= game.towns.at(game.home.post_id).product_capacity) {
 
-	while (game.turn_number < 10) {
+			towns_to_upgrade.push_back(game.home.post_id);
+			game.upgrade(towns_to_upgrade, trains_to_upgrade);
+			towns_to_upgrade.clear();
+		}
 
-		path.set_init_products(game.get_markets_product());
-		path.set_product_in_town(game.towns[1].product);
+		for (auto train : game.trains) {
 
-		auto best_path = path.find_pathways();
-		auto next_points = game.get_full_path(best_path);
+			if (train.second.player_id == game.idx) {
 
-		game.shopping(next_points, game.trains[0].idx);
-		game.update();
+				if (train.second.last_point_id == game.towns.at(game.home.post_id).point_id &&
+					train.second.next_level_price * 2 <= game.towns.at(game.home.post_id).armor) {
+
+					trains_to_upgrade.push_back(train.second.idx);
+					game.upgrade(towns_to_upgrade, trains_to_upgrade);
+					trains_to_upgrade.clear();
+				}
+
+				if (train.first <= 8) {
+					if (train.first <= 5) game.go(game.trains.at(train.second.idx), post_type::MARKET);
+					else game.go(game.trains.at(train.second.idx), post_type::STORAGE);
+					if (game.trains.at(train.second.idx).current_path.size() != 0) game.move(game.trains.at(train.second.idx).current_path.front(), train.second.idx);
+				}
+
+			}
+		}
+
 		game.turn();
+		if (i % 20 == 0) {
+			game.print_info();
+		}
 	}
 
-	int result = game.end();
-	log.close();
+	game.end();
+
 	return 0;
 }

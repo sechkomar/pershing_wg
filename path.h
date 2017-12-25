@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <numeric>
+#include <map>
 
 class CalculatePath {
 	//--- const ---
@@ -11,6 +12,7 @@ class CalculatePath {
 
 	std::map<uint32_t, std::map<uint32_t, uint32_t>> distances;
 	uint32_t train_capacity;
+
 	std::map<uint32_t, uint32_t> replenishments; //<market idx, value>
 	std::map<uint32_t, uint32_t> capacities;
 

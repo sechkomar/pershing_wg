@@ -1,0 +1,125 @@
+Rating: 300 Turn: 2
+Trains:
+    idx: 1, line_idx: 1, point_idx: 1, level(nl_price): 2(80), goods: 0/80 type: 0, heading_to: 2(34)
+    idx: 2, line_idx: 10, point_idx: 1, level(nl_price): 1(40), goods: 0/40 type: 0, heading_to: 11(34)
+    idx: 3, line_idx: 1, point_idx: 1, level(nl_price): 1(40), goods: 0/40 type: 0
+    idx: 4, line_idx: 1, point_idx: 1, level(nl_price): 1(40), goods: 0/40 type: 0
+    idx: 5, line_idx: 1, point_idx: 1, level(nl_price): 1(40), goods: 0/40 type: 0
+    idx: 6, line_idx: 1, point_idx: 1, level(nl_price): 1(40), goods: 0/40 type: 0
+    idx: 7, line_idx: 1, point_idx: 1, level(nl_price): 1(40), goods: 0/40 type: 0
+    idx: 8, line_idx: 1, point_idx: 1, level(nl_price): 1(40), goods: 0/40 type: 0
+
+My towns:
+    idx: 1, point_id: 1, level(nl_price): 1(100), armor: 60/200, product: 200/200, population: 0
+
+Marketplaces:
+    idx: 5, point_id: 34, name: market-01, product: 500/500, repl: 10
+    idx: 6, point_id: 37, name: market-02, product: 500/500, repl: 10
+    idx: 7, point_id: 64, name: market-03, product: 500/500, repl: 10
+    idx: 8, point_id: 67, name: market-04, product: 500/500, repl: 10
+    idx: 9, point_id: 45, name: storage-01, armor: 20/20, repl: 5
+    idx: 10, point_id: 46, name: storage-02, armor: 20/20, repl: 5
+    idx: 11, point_id: 55, name: storage-03, armor: 20/20, repl: 5
+    idx: 12, point_id: 56, name: storage-04, armor: 20/20, repl: 5
+
+
+Rating: 3287 Turn: 22
+Trains:
+    idx: 1, line_idx: 32, point_idx: 14, level(nl_price): 2(80), goods: 0/80 type: 0, heading_to: 24(34)
+    idx: 2, line_idx: 50, point_idx: 23, level(nl_price): 1(40), goods: 0/40 type: 0, heading_to: 33(34)
+    idx: 3, line_idx: 14, point_idx: 5, level(nl_price): 1(40), goods: 0/40 type: 0, heading_to: 15(34)
+    idx: 4, line_idx: 49, point_idx: 22, level(nl_price): 1(40), goods: 0/40 type: 0, heading_to: 32(34)
+    idx: 5, line_idx: 2, point_idx: 3, level(nl_price): 1(40), goods: 0/40 type: 0, heading_to: 3(34)
+    idx: 6, line_idx: 48, point_idx: 21, level(nl_price): 1(40), goods: 0/40 type: 0, heading_to: 31(45)
+    idx: 7, line_idx: 1, point_idx: 2, level(nl_price): 1(40), goods: 0/40 type: 0, heading_to: 2(45)
+    idx: 8, line_idx: 10, point_idx: 1, level(nl_price): 1(40), goods: 0/40 type: 0, heading_to: 11(45)
+
+My towns:
+    idx: 1, point_id: 1, level(nl_price): 1(100), armor: 57/200, product: 190/200, population: 3
+
+Marketplaces:
+    idx: 5, point_id: 34, name: market-01, product: 500/500, repl: 10
+    idx: 6, point_id: 37, name: market-02, product: 500/500, repl: 10
+    idx: 7, point_id: 64, name: market-03, product: 500/500, repl: 10
+    idx: 8, point_id: 67, name: market-04, product: 500/500, repl: 10
+    idx: 9, point_id: 45, name: storage-01, armor: 20/20, repl: 5
+    idx: 10, point_id: 46, name: storage-02, armor: 20/20, repl: 5
+    idx: 11, point_id: 55, name: storage-03, armor: 20/20, repl: 5
+    idx: 12, point_id: 56, name: storage-04, armor: 20/20, repl: 5
+
+
+Rating: 5208 Turn: 42
+Trains:
+    idx: 1, line_idx: 48, point_idx: 31, level(nl_price): 2(80), goods: 80/80 type: 2, heading_to: 21(1)
+    idx: 2, line_idx: 60, point_idx: 33, level(nl_price): 1(40), goods: 40/40 type: 2, heading_to: 33(1)
+    idx: 3, line_idx: 54, point_idx: 27, level(nl_price): 1(40), goods: 0/40 type: 0, heading_to: 37(37)
+    idx: 4, line_idx: 70, point_idx: 44, level(nl_price): 1(40), goods: 0/40 type: 0, heading_to: 34(34)
+    idx: 5, line_idx: 25, point_idx: 16, level(nl_price): 1(40), goods: 0/40 type: 0, heading_to: 17(67)
+    idx: 6, line_idx: 79, point_idx: 43, level(nl_price): 1(40), goods: 0/40 type: 0, heading_to: 44(45)
+    idx: 7, line_idx: 33, point_idx: 15, level(nl_price): 1(40), goods: 0/40 type: 0, heading_to: 25(45)
+    idx: 8, line_idx: 32, point_idx: 24, level(nl_price): 1(40), goods: 0/40 type: 0, heading_to: 14(46)
+
+My towns:
+    idx: 1, point_id: 1, level(nl_price): 1(100), armor: 54/200, product: 114/200, population: 5
+
+Marketplaces:
+    idx: 5, point_id: 34, name: market-01, product: 500/500, repl: 10
+    idx: 6, point_id: 37, name: market-02, product: 500/500, repl: 10
+    idx: 7, point_id: 64, name: market-03, product: 500/500, repl: 10
+    idx: 8, point_id: 67, name: market-04, product: 500/500, repl: 10
+    idx: 9, point_id: 45, name: storage-01, armor: 20/20, repl: 5
+    idx: 10, point_id: 46, name: storage-02, armor: 20/20, repl: 5
+    idx: 11, point_id: 55, name: storage-03, armor: 20/20, repl: 5
+    idx: 12, point_id: 56, name: storage-04, armor: 20/20, repl: 5
+
+
+Rating: 5182 Turn: 62
+Trains:
+    idx: 1, line_idx: 20, point_idx: 11, level(nl_price): 2(80), goods: 0/80 type: 0, heading_to: 12(34)
+    idx: 2, line_idx: 1, point_idx: 2, level(nl_price): 1(40), goods: 40/40 type: 2, heading_to: 1(1)
+    idx: 3, line_idx: 52, point_idx: 25, level(nl_price): 1(40), goods: 40/40 type: 2, heading_to: 35(1)
+    idx: 4, line_idx: 41, point_idx: 24, level(nl_price): 1(40), goods: 40/40 type: 2, heading_to: 23(1)
+    idx: 5, line_idx: 63, point_idx: 37, level(nl_price): 1(40), goods: 40/40 type: 2, heading_to: 36(1)
+    idx: 6, line_idx: 90, point_idx: 55, level(nl_price): 1(40), goods: 40/40 type: 3, heading_to: 55(1)
+    idx: 7, line_idx: 91, point_idx: 56, level(nl_price): 1(40), goods: 40/40 type: 3, heading_to: 46(1)
+    idx: 8, line_idx: 69, point_idx: 33, level(nl_price): 1(40), goods: 0/40 type: 0, heading_to: 43(55)
+
+My towns:
+    idx: 1, point_id: 1, level(nl_price): 1(100), armor: 51/200, product: 91/200, population: 5
+
+Marketplaces:
+    idx: 5, point_id: 34, name: market-01, product: 500/500, repl: 10
+    idx: 6, point_id: 37, name: market-02, product: 470/500, repl: 10
+    idx: 7, point_id: 64, name: market-03, product: 500/500, repl: 10
+    idx: 8, point_id: 67, name: market-04, product: 500/500, repl: 10
+    idx: 9, point_id: 45, name: storage-01, armor: 20/20, repl: 5
+    idx: 10, point_id: 46, name: storage-02, armor: 15/20, repl: 5
+    idx: 11, point_id: 55, name: storage-03, armor: 20/20, repl: 5
+    idx: 12, point_id: 56, name: storage-04, armor: 5/20, repl: 5
+
+
+Rating: 5154 Turn: 82
+Trains:
+    idx: 1, line_idx: 32, point_idx: 14, level(nl_price): 2(80), goods: 0/80 type: 0, heading_to: 24(34)
+    idx: 2, line_idx: 3, point_idx: 3, level(nl_price): 1(40), goods: 0/40 type: 0, heading_to: 4(37)
+    idx: 3, line_idx: 49, point_idx: 22, level(nl_price): 1(40), goods: 40/40 type: 2, heading_to: 22(1)
+    idx: 4, line_idx: 10, point_idx: 1, level(nl_price): 1(40), goods: 0/40 type: 0, heading_to: 1(1)
+    idx: 5, line_idx: 50, point_idx: 23, level(nl_price): 1(40), goods: 40/40 type: 2, heading_to: 23(1)
+    idx: 6, line_idx: 86, point_idx: 51, level(nl_price): 1(40), goods: 40/40 type: 3, heading_to: 41(1)
+    idx: 7, line_idx: 33, point_idx: 25, level(nl_price): 1(40), goods: 40/40 type: 3, heading_to: 15(1)
+    idx: 8, line_idx: 80, point_idx: 44, level(nl_price): 1(40), goods: 40/40 type: 3, heading_to: 44(1)
+
+My towns:
+    idx: 1, point_id: 1, level(nl_price): 1(100), armor: 49/200, product: 65/200, population: 5
+
+Marketplaces:
+    idx: 5, point_id: 34, name: market-01, product: 500/500, repl: 10
+    idx: 6, point_id: 37, name: market-02, product: 500/500, repl: 10
+    idx: 7, point_id: 64, name: market-03, product: 500/500, repl: 10
+    idx: 8, point_id: 67, name: market-04, product: 500/500, repl: 10
+    idx: 9, point_id: 45, name: storage-01, armor: 20/20, repl: 5
+    idx: 10, point_id: 46, name: storage-02, armor: 20/20, repl: 5
+    idx: 11, point_id: 55, name: storage-03, armor: 20/20, repl: 5
+    idx: 12, point_id: 56, name: storage-04, armor: 20/20, repl: 5
+
+
